@@ -109,7 +109,7 @@ REPORTS_DIR.mkdir(exist_ok=True)
 ASSETS_DIR = BASE_DIR / "assets"
 
 # Application Settings
-APP_TITLE = "Multi-Disease Risk Analytics Platform"
+APP_TITLE = "Multi-Disease Risk Analytics System"
 APP_ICON = "🏥"
 LAYOUT = "wide"
 INITIAL_SIDEBAR_STATE = "expanded"
