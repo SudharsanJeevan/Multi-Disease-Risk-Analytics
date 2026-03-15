@@ -40,7 +40,7 @@ with col1:
             age = st.number_input("Age (years)", min_value=1, max_value=120, value=40)
             gender = st.selectbox("Gender", ["Male", "Female"])
             tb = st.number_input("Total Bilirubin (mg/dL)", min_value=0.0, max_value=100.0, value=1.0, step=0.1)
-            db = st.number_input("Direct Bilirubin (mg/dL)", min_value=0.0, max_value=50.0, value=0.3, step=0.1)
+            direct_bil = st.number_input("Direct Bilirubin (mg/dL)", min_value=0.0, max_value=50.0, value=0.3, step=0.1)
             alkphos = st.number_input("Alkaline Phosphatase (IU/L)", min_value=0, max_value=2000, value=200)
         
         with col_b:
@@ -57,7 +57,7 @@ with col1:
                 'Age': age,
                 'Gender': 1 if gender == "Male" else 0,
                 'TotalBilirubin': tb,
-                'DirectBilirubin': db,
+                'DirectBilirubin': direct_bil,
                 'AlkalinePhosphatase': alkphos,
                 'AlamineAminotransferase': sgpt,
                 'AspartateAminotransferase': sgot,
