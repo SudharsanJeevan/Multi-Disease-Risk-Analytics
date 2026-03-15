@@ -87,7 +87,7 @@ with col1:
         submit = st.form_submit_button("🔍 Predict Risk", use_container_width=True)
         
         if submit:
-            input_data = pd.DataFrame([{
+            input_data = {
                 'MDVPFo': mdvp_fo, 'MDVPFhi': mdvp_fhi, 'MDVPFlo': mdvp_flo,
                 'MDVPJitter': mdvp_jitter, 'MDVPJitterAbs': mdvp_jitter_abs,
                 'MDVPRAP': mdvp_rap, 'MDVPPPQ': mdvp_ppq, 'JitterDDP': jitter_ddp,
@@ -96,11 +96,11 @@ with col1:
                 'MDVPAPQ': mdvp_apq, 'ShimmerDDA': shimmer_dda,
                 'NHR': nhr, 'HNR': hnr, 'RPDE': rpde, 'DFA': dfa,
                 'Spread1': spread1, 'Spread2': spread2, 'D2': d2, 'PPE': ppe
-            }])
+            }
             
             result = predictor.predict(input_data)
             
-            if result['success']:
+            if not result.get('error'):
                 st.success("✅ Prediction completed!")
                 risk_prob = result['probability']
                 risk_level = result['risk_level']
@@ -117,7 +117,7 @@ with col1:
                 db.save_prediction(
                     user_id=auth.get_user_id(),
                     disease_type='parkinsons',
-                    input_data=input_data.to_dict('records')[0],
+                    input_parameters=input_data,
                     prediction_result=result['prediction'],
                     risk_probability=risk_prob,
                     risk_level=risk_level

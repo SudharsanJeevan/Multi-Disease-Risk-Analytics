@@ -63,7 +63,8 @@ class DiseasePredictor:
                 'error': 'Model not available',
                 'prediction': None,
                 'probability': None,
-                'risk_level': None
+                'risk_level': None,
+                'success': False
             }
         
         try:
@@ -73,7 +74,16 @@ class DiseasePredictor:
             elif isinstance(input_data, (list, np.ndarray)):
                 input_array = np.array(input_data).reshape(1, -1)
             else:
-                return {'error': 'Invalid input format'}
+                # Try pandas DataFrame
+                try:
+                    import pandas as pd
+                    if isinstance(input_data, pd.DataFrame):
+                        input_array = input_data.values.reshape(1, -1) if input_data.shape[0] == 1 else input_data.values
+                    else:
+                        input_array = np.array(input_data).reshape(1, -1)
+                except Exception:
+                    return {'error': 'Invalid input format', 'prediction': None,
+                            'probability': None, 'risk_level': None, 'success': False}
             
             # Scale features
             input_scaled = self.scaler.transform(input_array)
@@ -97,12 +107,12 @@ class DiseasePredictor:
             
             # Determine risk level
             risk_level = self.get_risk_level(risk_prob)
-            
             return {
                 'prediction': int(prediction),
                 'probability': float(risk_prob),
                 'risk_level': risk_level,
-                'error': None
+                'error': None,
+                'success': True
             }
             
         except Exception as e:
@@ -110,7 +120,8 @@ class DiseasePredictor:
                 'error': str(e),
                 'prediction': None,
                 'probability': None,
-                'risk_level': None
+                'risk_level': None,
+                'success': False
             }
     
     def get_risk_level(self, probability):

@@ -45,7 +45,7 @@ with col1:
         submit = st.form_submit_button("🔍 Predict Risk", use_container_width=True)
         
         if submit:
-            input_data = pd.DataFrame([{
+            input_data = {
                 'Age': age,
                 'Gender': 0 if gender == "Male" else 1,
                 'CoughDuration': cough_duration,
@@ -57,11 +57,11 @@ with col1:
                 'HIVStatus': 1 if hiv_status == "Yes" else 0,
                 'PreviousTB': 1 if previous_tb == "Yes" else 0,
                 'BCGVaccination': 1 if bcg_vaccine == "Yes" else 0
-            }])
+            }
             
             result = predictor.predict(input_data)
             
-            if result['success']:
+            if not result.get('error'):
                 st.success("✅ Prediction completed!")
                 risk_prob = result['probability']
                 risk_level = result['risk_level']
@@ -78,7 +78,7 @@ with col1:
                 db.save_prediction(
                     user_id=auth.get_user_id(),
                     disease_type='tuberculosis',
-                    input_data=input_data.to_dict('records')[0],
+                    input_parameters=input_data,
                     prediction_result=result['prediction'],
                     risk_probability=risk_prob,
                     risk_level=risk_level
