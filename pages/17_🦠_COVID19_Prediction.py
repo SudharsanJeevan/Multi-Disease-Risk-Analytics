@@ -14,7 +14,7 @@ auth = Authentication()
 db = DatabaseManager()
 predictor = get_predictor('covid19')
 
-if not auth.require_login():
+if not auth.require_admin():
     st.stop()
 
 st.title("🦠 COVID-19 Severity Prediction")

@@ -17,7 +17,7 @@ viz = Visualizer()
 db = DatabaseManager()
 predictor = get_predictor('kidney')
 
-if not auth.require_login():
+if not auth.require_admin():
     st.stop()
 
 st.title("🫘 Kidney Disease Risk Prediction")

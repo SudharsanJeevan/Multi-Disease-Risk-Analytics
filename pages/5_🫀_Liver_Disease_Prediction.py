@@ -17,7 +17,7 @@ viz = Visualizer()
 db = DatabaseManager()
 predictor = get_predictor('liver')
 
-if not auth.require_login():
+if not auth.require_admin():
     st.stop()
 
 st.title("🫀 Liver Disease Risk Prediction")

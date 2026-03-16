@@ -16,7 +16,7 @@ st.set_page_config(page_title="Lung Cancer Prediction", page_icon="🫁", layout
 auth = Authentication()
 db = DatabaseManager()
 
-if not auth.require_login():
+if not auth.require_admin():
     st.stop()
 
 # Load model, scaler, label encoder, feature names

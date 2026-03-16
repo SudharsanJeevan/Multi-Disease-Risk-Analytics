@@ -14,7 +14,7 @@ auth = Authentication()
 db = DatabaseManager()
 predictor = get_predictor('alzheimers')
 
-if not auth.require_login():
+if not auth.require_admin():
     st.stop()
 
 st.title("🧩 Alzheimer's Risk Prediction")

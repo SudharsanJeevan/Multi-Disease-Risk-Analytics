@@ -17,7 +17,7 @@ viz = Visualizer()
 db = DatabaseManager()
 predictor = get_predictor('breast_cancer')
 
-if not auth.require_login():
+if not auth.require_admin():
     st.stop()
 
 st.title("🎀 Breast Cancer Risk Prediction")
