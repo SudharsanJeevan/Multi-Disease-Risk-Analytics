@@ -17,48 +17,186 @@ st.set_page_config(
 
 # Custom CSS
 def load_custom_css():
-    """Load custom CSS styling"""
+    """Load custom CSS styling — professional conference-ready theme"""
     st.markdown("""
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <style>
+        /* ── Global Font & Base ─────────────────────────────────── */
+        html, body, [class*="css"] {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        }
         .main {
             padding: 0rem 1rem;
         }
-        .stButton>button {
-            width: 100%;
-            border-radius: 10px;
-            height: 3em;
-            font-weight: 600;
-        }
-        .stTextInput>div>div>input {
-            border-radius: 10px;
-        }
+
+        /* ── Headings ───────────────────────────────────────────── */
         h1 {
-            color: #2c3e50;
-            padding-bottom: 1rem;
+            color: #1a1a2e !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.5px;
+            padding-bottom: 0.5rem;
         }
         h2 {
-            color: #34495e;
+            color: #16213e !important;
+            font-weight: 600 !important;
         }
-        .success-box {
-            padding: 1rem;
+        h3 {
+            color: #0f3460 !important;
+            font-weight: 600 !important;
+        }
+
+        /* ── Buttons ────────────────────────────────────────────── */
+        .stButton>button {
+            width: 100%;
+            border-radius: 12px;
+            height: 3em;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif !important;
+            letter-spacing: 0.3px;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);
+        }
+        .stButton>button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        .stButton>button:active {
+            transform: translateY(0);
+        }
+
+        /* ── Form Inputs ────────────────────────────────────────── */
+        .stTextInput>div>div>input,
+        .stNumberInput>div>div>input,
+        .stSelectbox>div>div>div {
             border-radius: 10px;
-            background-color: #d4edda;
+            border: 1.5px solid #e0e5ec;
+            padding: 0.6rem 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Inter', sans-serif !important;
+        }
+        .stTextInput>div>div>input:focus,
+        .stNumberInput>div>div>input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
+
+        /* ── Sidebar ────────────────────────────────────────────── */
+        [data-testid="stSidebar"] {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+        }
+        [data-testid="stSidebar"] * {
+            color: #e0e0e0 !important;
+        }
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3 {
+            color: #ffffff !important;
+        }
+        [data-testid="stSidebar"] .stButton>button {
+            background: linear-gradient(135deg, #e94560 0%, #c23152 100%) !important;
+            border: none;
+            box-shadow: 0 2px 8px rgba(233, 69, 96, 0.3);
+        }
+        [data-testid="stSidebar"] .stButton>button:hover {
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+        }
+        [data-testid="stSidebar"] hr {
+            border-color: rgba(255,255,255,0.15) !important;
+        }
+
+        /* ── Metrics ────────────────────────────────────────────── */
+        [data-testid="stMetric"] {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+            border: 1px solid #e8ebf5;
+            border-radius: 14px;
+            padding: 1rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease;
+        }
+        [data-testid="stMetric"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        [data-testid="stMetricLabel"] {
+            font-weight: 500 !important;
+            color: #64748b !important;
+            font-size: 0.85rem !important;
+        }
+        [data-testid="stMetricValue"] {
+            font-weight: 700 !important;
+            color: #1a1a2e !important;
+        }
+
+        /* ── Tabs ───────────────────────────────────────────────── */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 8px;
+        }
+        .stTabs [data-baseweb="tab"] {
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        /* ── Alert Boxes ────────────────────────────────────────── */
+        .success-box {
+            padding: 1.2rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             border-left: 5px solid #28a745;
             margin: 1rem 0;
+            font-family: 'Inter', sans-serif;
         }
         .warning-box {
-            padding: 1rem;
-            border-radius: 10px;
-            background-color: #fff3cd;
+            padding: 1.2rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
             border-left: 5px solid #ffc107;
             margin: 1rem 0;
+            font-family: 'Inter', sans-serif;
         }
         .danger-box {
-            padding: 1rem;
-            border-radius: 10px;
-            background-color: #f8d7da;
+            padding: 1.2rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
             border-left: 5px solid #dc3545;
             margin: 1rem 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ── Expander ───────────────────────────────────────────── */
+        .streamlit-expanderHeader {
+            font-weight: 600 !important;
+            font-family: 'Inter', sans-serif !important;
+            border-radius: 10px;
+        }
+
+        /* ── DataFrames / Tables ─────────────────────────────────── */
+        .stDataFrame {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        /* ── Smooth page transitions ─────────────────────────────── */
+        .main .block-container {
+            animation: fadeIn 0.4s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Scrollbar ───────────────────────────────────────────── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 3px;
         }
         </style>
     """, unsafe_allow_html=True)
