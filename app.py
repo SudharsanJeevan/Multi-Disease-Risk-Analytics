@@ -18,8 +18,10 @@ st.set_page_config(
 # Custom CSS
 def load_custom_css():
     """Load custom CSS styling — professional conference-ready theme"""
+    # Load Google Font
+    st.markdown('<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">', unsafe_allow_html=True)
+    # Apply CSS
     st.markdown("""
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <style>
         /* ── Global Font & Base ─────────────────────────────────── */
         html, body, [class*="css"] {
@@ -31,18 +33,25 @@ def load_custom_css():
 
         /* ── Headings ───────────────────────────────────────────── */
         h1 {
-            color: #1a1a2e !important;
+            color: #e8eaed !important;
             font-weight: 700 !important;
             letter-spacing: -0.5px;
             padding-bottom: 0.5rem;
         }
         h2 {
-            color: #16213e !important;
+            color: #d3d7de !important;
             font-weight: 600 !important;
         }
         h3 {
-            color: #0f3460 !important;
+            color: #bfc5cf !important;
             font-weight: 600 !important;
+        }
+        /* Only target top-level markdown text, not text inside inline-styled divs */
+        .main [data-testid="stMarkdownContainer"] > p {
+            color: #c9cdd4;
+        }
+        .main [data-testid="stMarkdownContainer"] > ul > li {
+            color: #c9cdd4;
         }
 
         /* ── Buttons ────────────────────────────────────────────── */
@@ -110,25 +119,25 @@ def load_custom_css():
 
         /* ── Metrics ────────────────────────────────────────────── */
         [data-testid="stMetric"] {
-            background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-            border: 1px solid #e8ebf5;
+            background: rgba(30, 39, 60, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 14px;
             padding: 1rem;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
             transition: transform 0.2s ease;
         }
         [data-testid="stMetric"]:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
         [data-testid="stMetricLabel"] {
             font-weight: 500 !important;
-            color: #64748b !important;
+            color: #a0aec0 !important;
             font-size: 0.85rem !important;
         }
         [data-testid="stMetricValue"] {
             font-weight: 700 !important;
-            color: #1a1a2e !important;
+            color: #ffffff !important;
         }
 
         /* ── Tabs ───────────────────────────────────────────────── */
@@ -374,35 +383,35 @@ def main():
 
             with col1:
                 st.markdown("""
-                    <div style='background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                                padding: 1.5rem; border-radius: 10px; color: white; margin-bottom: 1rem;'>
-                        <h3 style='color: white; margin: 0;'>🤖 Health Chatbot</h3>
-                        <p style='margin: 0.5rem 0 0 0;'>Guided health screening — answer a few questions to assess your risk</p>
+                    <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;'>
+                        <h3 style='color: white !important; margin: 0;'>🤖 Health Chatbot</h3>
+                        <p style='margin: 0.5rem 0 0 0; color: rgba(255,255,255,0.85) !important;'>Guided health screening — answer a few questions to assess your risk</p>
                     </div>
                 """, unsafe_allow_html=True)
 
                 st.markdown("""
-                    <div style='background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-                                padding: 1.5rem; border-radius: 10px; color: white; margin-bottom: 1rem;'>
-                        <h3 style='color: white; margin: 0;'>💉 Diabetes · ❤️ Heart · 🫘 Kidney</h3>
-                        <p style='margin: 0.5rem 0 0 0;'>Core disease predictions with detailed analysis</p>
+                    <div style='background: linear-gradient(135deg, #0f3460 0%, #533483 100%);
+                                padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;'>
+                        <h3 style='color: white !important; margin: 0;'>💉 Diabetes · ❤️ Heart · 🫘 Kidney</h3>
+                        <p style='margin: 0.5rem 0 0 0; color: rgba(255,255,255,0.85) !important;'>Core disease predictions with detailed analysis</p>
                     </div>
                 """, unsafe_allow_html=True)
 
             with col2:
                 st.markdown("""
-                    <div style='background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-                                padding: 1.5rem; border-radius: 10px; color: white; margin-bottom: 1rem;'>
-                        <h3 style='color: white; margin: 0;'>🫀 Liver · 🎀 Breast Cancer · 🫁 Lung</h3>
-                        <p style='margin: 0.5rem 0 0 0;'>Advanced screening for critical conditions</p>
+                    <div style='background: linear-gradient(135deg, #e94560 0%, #0f3460 100%);
+                                padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;'>
+                        <h3 style='color: white !important; margin: 0;'>🫀 Liver · 🎀 Breast Cancer · 🫁 Lung</h3>
+                        <p style='margin: 0.5rem 0 0 0; color: rgba(255,255,255,0.85) !important;'>Advanced screening for critical conditions</p>
                     </div>
                 """, unsafe_allow_html=True)
 
                 st.markdown("""
-                    <div style='background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-                                padding: 1.5rem; border-radius: 10px; color: #2c3e50; margin-bottom: 1rem;'>
-                        <h3 style='color: #2c3e50; margin: 0;'>🧠 Stroke · 🦋 Thyroid · 🩸 Anemia</h3>
-                        <p style='margin: 0.5rem 0 0 0;'>Plus Pneumonia, TB, Alzheimer's, COVID-19, Melanoma</p>
+                    <div style='background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+                                padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);'>
+                        <h3 style='color: white !important; margin: 0;'>🧠 Stroke · 🦋 Thyroid · 🩸 Anemia</h3>
+                        <p style='margin: 0.5rem 0 0 0; color: rgba(255,255,255,0.85) !important;'>Plus Pneumonia, TB, Alzheimer's, COVID-19, Melanoma</p>
                     </div>
                 """, unsafe_allow_html=True)
 

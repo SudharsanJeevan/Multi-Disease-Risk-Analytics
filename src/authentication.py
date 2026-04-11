@@ -50,20 +50,19 @@ class Authentication:
             }
             """
             
-        # Default: Rename 'View 10 more' to 'View more'
+        # Show all sidebar nav items — no collapse/expand
         css += """
+        /* Remove height limit so all items are visible */
+        [data-testid="stSidebarNavItems"],
+        [data-testid="stSidebarNav"] ul {
+            max-height: none !important;
+            overflow: visible !important;
+        }
+        /* Hide the toggle button entirely */
+        [data-testid="stSidebarNavItems"] button,
+        [data-testid="stSidebarNav"] button,
         button.e1pqlk4310 {
-            font-size: 0 !important;
-        }
-        button.e1pqlk4310::before {
-            content: "View more" !important;
-            font-size: 14px !important;
-            visibility: visible !important;
-        }
-        
-        /* Expanded state: Detect when many items are present in DOM and show 'View less' */
-        [data-testid="stSidebarNavItems"]:has(li:nth-child(11)) button.e1pqlk4310::before {
-            content: "View less" !important;
+            display: none !important;
         }
         """
         
