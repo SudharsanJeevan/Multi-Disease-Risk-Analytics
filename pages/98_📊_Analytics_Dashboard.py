@@ -167,9 +167,9 @@ display_df.columns = ['Disease', 'Result', 'Risk %', 'Risk Level', 'Date']
 # Display with color coding
 st.dataframe(
     display_df.style.applymap(
-        lambda x: 'background-color: #d4edda' if x == 'Low' 
-        else ('background-color: #fff3cd' if x == 'Moderate' 
-              else ('background-color: #f8d7da' if x == 'High' else '')),
+        lambda x: 'background-color: #d4edda; color: #155724' if x == 'Low' 
+        else ('background-color: #fff3cd; color: #856404' if x == 'Moderate' 
+              else ('background-color: #f8d7da; color: #721c24' if x == 'High' else '')),
         subset=['Risk Level']
     ),
     use_container_width=True,

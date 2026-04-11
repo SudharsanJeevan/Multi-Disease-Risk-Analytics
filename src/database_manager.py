@@ -151,6 +151,24 @@ class DatabaseManager:
         except Exception as e:
             print(f"Error getting user: {e}")
             return None
+            
+    def delete_user(self, user_id):
+        """Delete a user and all their associated predictions"""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            
+            # Delete predictions first (foreign key constraint)
+            cursor.execute("DELETE FROM predictions WHERE user_id = ?", (user_id,))
+            
+            # Delete user
+            cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+            
+            conn.commit()
+            conn.close()
+            return True, "User deleted successfully"
+        except Exception as e:
+            return False, f"Error deleting user: {str(e)}"
     
     def save_prediction(self, user_id, disease_type, prediction_result, 
                        risk_probability, risk_level, input_parameters):
