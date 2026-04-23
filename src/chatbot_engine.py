@@ -350,67 +350,55 @@ def process_symptom_answers(disease_type, answers):
             f["DiabetesPedigreeFunction"] = 1.2
             
     elif disease_type == "heart":
-        f["Age"] = int(answers.get("s_age", 50))
-        f["Sex"] = answers.get("s_gender", 1)
-        f["RestingBP"] = 120
-        f["Cholesterol"] = 190
-        f["FastingBS"] = 0
-        f["RestingECG"] = 0
-        f["MaxHR"] = 150
-        f["Oldpeak"] = 0.5
-        f["ST_Slope"] = 1
-        
-        if is_present(answers.get("s_bp_history")):
-            f["RestingBP"] = 150
-        if is_present(answers.get("s_chol_history")):
-            f["Cholesterol"] = 260
-        
+        # Order: Age, Sex, ChestPainType, RestingBP, Cholesterol, FastingBS, RestingECG, MaxHR, ExerciseAngina, Oldpeak, ST_Slope
         chest_pain_sev = get_severity(answers.get("s_chest_pain"))
         if is_present(answers.get("s_chest_severe")):
-            f["ChestPainType"] = 3
-            f["ExerciseAngina"] = 1
-            f["Oldpeak"] = 3.0
-            f["ST_Slope"] = 2
+            cpt = 3; ea = 1; op = 3.0; sts = 2
         elif chest_pain_sev >= 2:
-            f["ChestPainType"] = chest_pain_sev - 1
-            f["ExerciseAngina"] = 1
-            f["Oldpeak"] = 1.5
+            cpt = chest_pain_sev - 1; ea = 1; op = 1.5; sts = 1
         else:
-            f["ChestPainType"] = 0
-            f["ExerciseAngina"] = 0
-            
-        if is_present(answers.get("s_breath")):
-            f["MaxHR"] = 110
+            cpt = 0; ea = 0; op = 0.5; sts = 1
+
+        f["Age"] = int(answers.get("s_age", 50))
+        f["Sex"] = answers.get("s_gender", 1)
+        f["ChestPainType"] = cpt
+        f["RestingBP"] = 150 if is_present(answers.get("s_bp_history")) else 120
+        f["Cholesterol"] = 260 if is_present(answers.get("s_chol_history")) else 190
+        f["FastingBS"] = 0
+        f["RestingECG"] = 0
+        f["MaxHR"] = 110 if is_present(answers.get("s_breath")) else 150
+        f["ExerciseAngina"] = ea
+        f["Oldpeak"] = op
+        f["ST_Slope"] = sts
             
     elif disease_type == "kidney":
+        # Order: Age, BloodPressure, SpecificGravity, Albumin, Sugar, RedBloodCells, PusCell, PusCellClumps, Bacteria,
+        #        BloodGlucoseRandom, BloodUrea, SerumCreatinine, Sodium, Potassium, Hemoglobin, PackedCellVolume,
+        #        WhiteBloodCellCount, RedBloodCellCount
+        has_urine_issue = is_present(answers.get("s_urine_color")) or is_present(answers.get("s_swelling"))
+        has_fatigue = is_present(answers.get("s_fatigue"))
+
         f["Age"] = int(answers.get("s_age", 50))
         f["BloodPressure"] = 80
-        f["SpecificGravity"] = 1.02
-        f["Albumin"] = 0
+        f["SpecificGravity"] = 1.01 if has_urine_issue else 1.02
+        f["Albumin"] = 3 if has_urine_issue else 0
         f["Sugar"] = 0
+        f["RedBloodCells"] = 0  # 0=normal
+        f["PusCell"] = 0  # 0=normal
+        f["PusCellClumps"] = 1 if has_urine_issue else 0
+        f["Bacteria"] = 0
         f["BloodGlucoseRandom"] = 110
-        f["BloodUrea"] = 35
-        f["SerumCreatinine"] = 1.0
+        f["BloodUrea"] = 80 if has_urine_issue else 35
+        f["SerumCreatinine"] = 3.5 if has_urine_issue else 1.0
         f["Sodium"] = 140
         f["Potassium"] = 4.5
-        f["Hemoglobin"] = 14.0
-        f["PackedCellVolume"] = 42
-        f["WBC"] = 7000
-        f["RBC"] = 5.2
-        f["Hypertension"] = 1 if is_present(answers.get("s_bp_history")) else 0
-        f["DiabetesMellitus"] = 1 if is_present(answers.get("s_diabetes_history")) else 0
-        f["CoronaryArteryDisease"] = 0
-        f["Appetite"] = 1 if is_present(answers.get("s_appetite")) else 0
+        f["Hemoglobin"] = 9.0 if has_fatigue else 14.0
+        f["PackedCellVolume"] = 28 if has_fatigue else 42
+        f["WhiteBloodCellCount"] = 7000
+        f["RedBloodCellCount"] = 3.5 if has_fatigue else 5.2
         
-        if is_present(answers.get("s_urine_color")) or is_present(answers.get("s_swelling")):
-            f["SpecificGravity"] = 1.01
-            f["Albumin"] = 3
-            f["SerumCreatinine"] = 3.5
-            f["BloodUrea"] = 80
-        if is_present(answers.get("s_fatigue")):
-            f["Hemoglobin"] = 9.0
-            f["PackedCellVolume"] = 28
-            f["RBC"] = 3.5
+        if is_present(answers.get("s_bp_history")):
+            f["BloodPressure"] = 100
             
     elif disease_type == "liver":
         f["Age"] = int(answers.get("s_age", 40))
@@ -436,11 +424,13 @@ def process_symptom_answers(disease_type, answers):
             f["AlbuminGlobulinRatio"] = 0.8
             
     elif disease_type == "stroke":
-        f["Age"] = int(answers.get("s_age", 55))
+        # Order: Gender, Age, Hypertension, HeartDisease, EverMarried, WorkType, ResidenceType, AvgGlucoseLevel, BMI, SmokingStatus
+        age_val = int(answers.get("s_age", 55))
         f["Gender"] = answers.get("s_gender", 1)
+        f["Age"] = age_val
         f["Hypertension"] = 1 if is_present(answers.get("s_bp")) else 0
         f["HeartDisease"] = 0
-        f["EverMarried"] = 1 if f["Age"] > 30 else 0
+        f["EverMarried"] = 1 if age_val > 30 else 0
         f["WorkType"] = 0
         f["ResidenceType"] = 1
         f["AvgGlucoseLevel"] = 95.0
@@ -544,23 +534,24 @@ def process_symptom_answers(disease_type, answers):
             f["CDR"] = 1.0
             
     elif disease_type == "covid19":
+        # Order: Age, Gender, COVIDContact, Fever, Cough, SoreThroat, ShortnessOfBreath, HeadAche,
+        #        Diabetes, Hypertension, CardiovascularDisease, Obesity, ChronicPulmonary, Pneumonia
+        fever_val = 1 if (is_present(answers.get("s_fever")) or is_present(answers.get("s_taste_smell"))) else 0
+        cough_val = 1 if (is_present(answers.get("s_cough")) or is_present(answers.get("s_taste_smell"))) else 0
         f["Age"] = int(answers.get("s_age", 40))
         f["Gender"] = answers.get("s_gender", 1)
         f["COVIDContact"] = 1 if is_present(answers.get("s_contact")) else 0
-        f["Fever"] = 1 if is_present(answers.get("s_fever")) else 0
-        f["Cough"] = 1 if is_present(answers.get("s_cough")) else 0
+        f["Fever"] = fever_val
+        f["Cough"] = cough_val
         f["SoreThroat"] = 1 if is_present(answers.get("s_throat_body")) else 0
-        f["HeadAche"] = f["SoreThroat"]
         f["ShortnessOfBreath"] = 1 if is_present(answers.get("s_breath")) else 0
+        f["HeadAche"] = f["SoreThroat"]
         f["Diabetes"] = 0
         f["Hypertension"] = 0
         f["CardiovascularDisease"] = 0
         f["Obesity"] = 0
         f["ChronicPulmonary"] = 0
-        
-        if is_present(answers.get("s_taste_smell")):
-            f["Fever"] = 1
-            f["Cough"] = 1
+        f["Pneumonia"] = 0  # Missing feature that was causing the crash
             
     elif disease_type == "melanoma":
         f["Age"] = int(answers.get("s_age", 40))
