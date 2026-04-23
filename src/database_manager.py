@@ -38,9 +38,16 @@ class DatabaseManager:
                 full_name TEXT,
                 age INTEGER,
                 gender TEXT,
+                role TEXT DEFAULT 'user',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        
+        # Migrate existing databases: add role column if missing
+        try:
+            cursor.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'")
+        except sqlite3.OperationalError:
+            pass  # Column already exists
         
         # Predictions table
         cursor.execute('''
