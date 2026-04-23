@@ -168,7 +168,7 @@ elif st.session_state.chat_stage == 'chatting':
             for i, opt in enumerate(options):
                 with cols[i % 4]:
                     if st.button(opt, use_container_width=True):
-                        handle_answer(key, opt)
+                        handle_answer(key, current_q["options"][opt], display_value=opt)
                         
         # NUMBER
         elif current_q["type"] in ["number", "number_float"]:
